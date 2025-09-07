@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] args) {
      
 
-       var temperatureConverter = new Converter();
-       temperatureConverter.setVisible(true);
+       var photoLib = new PhotoLib();
+       photoLib.setVisible(true);
     }
 
 

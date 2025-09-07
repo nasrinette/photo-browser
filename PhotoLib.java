@@ -1,9 +1,9 @@
 import javax.swing.*;
 import javax.swing.*;
 import java.awt.*;
-public class Converter extends JFrame {
+public class PhotoLib extends JFrame {
     // private JLabel resultLabel;
-    public Converter() {
+    public PhotoLib() {
         super("Photo browser");
         // var tempPanel = new JPanel();
         // add(tempPanel, BorderLayout.CENTER);
