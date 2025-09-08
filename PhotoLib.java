@@ -1,23 +1,28 @@
 import javax.swing.*;
-import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 public class PhotoLib extends JFrame {
-    // private JLabel resultLabel;
+    private JLabel statusLabel;
     public PhotoLib() {
-        super("Photo browser");
-        // var tempPanel = new JPanel();
-        // add(tempPanel, BorderLayout.CENTER);
+    super("Photo browser");
+    
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setLayout(new BorderLayout(10,10));
+    setPreferredSize(new Dimension(1200, 800));
+    setMinimumSize(new Dimension(600, 300));
+    setupMenuBar();
+    setupMainPanel();
+    setupStatusBar();
+    setupToolbar();
+    pack();
+ 
 
-        // var tempLabel = new JLabel("Temperature");
-        // tempPanel.add(tempLabel);
-
-        // var input = new JTextField( 10);
-        // tempPanel.add(input);
-        // setPreferredSize(new Dimension(600, 600));
-
-
-    setPreferredSize(new Dimension(1000, 800));
-  
+}
+private void setupMenuBar(){
        var menuBar = new JMenuBar();
        var fileMenu = new JMenu("File");
        menuBar.add(fileMenu);
@@ -32,9 +37,8 @@ public class PhotoLib extends JFrame {
        fileMenu.add(importItem);
        fileMenu.add(deleteItem);
        fileMenu.add(quitItem);
-
-       var viewRdItem = new JRadioButtonMenuItem("View photo");
- 
+     
+       var viewRdItem = new JRadioButtonMenuItem("View photo", true);
 
        var browseRdItem = new JRadioButtonMenuItem("Browser");
        viewMenu.add(viewRdItem);
@@ -45,52 +49,89 @@ public class PhotoLib extends JFrame {
        viewGroup.add(viewRdItem);
        viewGroup.add(browseRdItem);
 
+        ActionListener importListener = e->importFile();
+        ActionListener quitListener = e-> quitApp();
+        ActionListener viewListener = e->photoViewer();
+        ActionListener browseListener = e->photoBrowser();
+        ActionListener deleteListener = e->deletePhoto();
+
+        viewRdItem.addActionListener(viewListener);
+        browseRdItem.addActionListener(browseListener);
+        importItem.addActionListener(importListener);
+        deleteItem.addActionListener(deleteListener);
+        quitItem.addActionListener(quitListener);
 
        setJMenuBar(menuBar);
-       var label = new JLabel("Main panel");
-      add(label);
-      pack();
-    //   setVisible(true);
-
-
-
+    
 }
 
-// private void setupInputPanel(){
-//      var tempPanel = new JPanel();
-//         add(tempPanel, BorderLayout.NORTH);
+private void setupMainPanel(){
+    var mainPanel =  new JPanel();
+      //  var mainLabel = new JLabel("Main panel");
+      // mainPanel.add(mainLabel, BorderLayout.CENTER);
+      add(mainPanel, BorderLayout.CENTER);
+}
+private void setupStatusBar(){
+  var statusPanel =  new JPanel();
+  statusLabel = new JLabel("Status bar");
+  statusPanel.setBackground(Color.decode("#ffffff"));
+  statusPanel.setLayout(new BorderLayout());
+  statusPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-//         var tempLabel = new JLabel("Temperature");
-//         tempPanel.add(tempLabel);
+  statusPanel.add(statusLabel, BorderLayout.WEST);
+   
+  add(statusPanel, BorderLayout.SOUTH);
 
-//         var input = new JTextField( 10);
-//         tempPanel.add(input);
-//         setPreferredSize(new Dimension(600, 600));
-//         // pack();
+}
+private void setupToolbar(){
+  var toolbarPanel = new JPanel();
 
+  add(toolbarPanel, BorderLayout.WEST);
+  var label = new JLabel("Categories");
+  toolbarPanel.add(label);
+  ActionListener categListener = e->printCategory(e);
 
-//     }
-// private void setupButtonPanel(){
-//     var btnPanel = new JPanel();
-//     var convertToF = new JButton("Convert to F");   btnPanel.add(convertToF);
-// convertToF.addActionListener(e->{
-//     System.out.println("Convert to F button clicked");
-//     resultLabel.setText("Result: 212 F");
-// });
-//     var convertToC = new JButton("Convert to C");    btnPanel.add(convertToC);
+  var peopleToggle = new JToggleButton("People");
+  peopleToggle.addActionListener(categListener);
 
-//     add(btnPanel, BorderLayout.SOUTH);
+  toolbarPanel.add(peopleToggle);
+  var placesToggle = new JToggleButton("Places");
+  placesToggle.addActionListener(categListener);
+  toolbarPanel.add(placesToggle);
+  var schoolToggle = new JToggleButton("School");
+  schoolToggle.addActionListener(categListener);
+  toolbarPanel.add(schoolToggle);
+}
 
-// }
+private void printCategory(ActionEvent e){
+      statusLabel.setText("Selected category: "+ e.getActionCommand());
 
+}
+private void importFile(){
 
-// private void setupResultPanel(){
-//     var resultPanel = new JPanel();
+     //Got this code from Oracle documentation: https://docs.oracle.com/javase/8/docs/api/javax/swing/JFileChooser.html
+     JFileChooser chooser = new JFileChooser();
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "JPG & GIF Images", "jpg", "gif");
+    chooser.setFileFilter(filter);
+    int returnVal = chooser.showOpenDialog(this);
+    if(returnVal == JFileChooser.APPROVE_OPTION) {
+      statusLabel.setText("You chose to open this file: " +
+            chooser.getSelectedFile().getName());
+    }
+}
 
-// resultLabel = new JLabel("Result:");
-// resultPanel.add(resultLabel);
-// add(resultPanel, BorderLayout.CENTER);
-
-// }
+private void quitApp(){
+  System.exit(0);
+}
+private void deletePhoto(){
+  statusLabel.setText("Deleting a photo...");
+}
+private void photoViewer(){
+  statusLabel.setText("Photo viewer: shows one photo at a time");
+}
+private void photoBrowser(){
+  statusLabel.setText("Browser: shows a grid of thumbnails");
+}
 }
         
