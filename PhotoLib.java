@@ -7,22 +7,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class PhotoLib extends JFrame {
     private JLabel statusLabel;
-    public PhotoLib() {
-    super("Photo browser");
-    
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setLayout(new BorderLayout(10,10));
-    setPreferredSize(new Dimension(1200, 800));
-    setMinimumSize(new Dimension(600, 300));
-    setupMenuBar();
-    setupMainPanel();
-    setupStatusBar();
-    setupToolbar();
-    pack();
- 
+    private final JPanel root = new JPanel(new BorderLayout(10,10)); // ROOT
 
-}
-private void setupMenuBar(){
+    public PhotoLib() {
+        super("Photo browser");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setContentPane(root);                    
+        setPreferredSize(new Dimension(1300, 900));
+        // setMinimumSize(new Dimension(600, 300));
+
+        setupMenuBar();
+        setupMainPanel();   // root.adds CENTER
+        setupToolbar();     // root.adds NORTH
+        setupStatusBar();   // root.adds SOUTH
+
+        pack();
+    }
+
+    private void setupMenuBar(){
        var menuBar = new JMenuBar();
        var fileMenu = new JMenu("File");
        menuBar.add(fileMenu);
@@ -64,13 +66,20 @@ private void setupMenuBar(){
        setJMenuBar(menuBar);
     
 }
-
-private void setupMainPanel(){
-    var mainPanel =  new JPanel();
-      //  var mainLabel = new JLabel("Main panel");
-      // mainPanel.add(mainLabel, BorderLayout.CENTER);
-      add(mainPanel, BorderLayout.CENTER);
+private void setupMainPanel() {
+    PhotoComponent photo = new PhotoComponent();
+    try {
+    photo.loadPhoto("me.jpg"); 
+} catch (Exception ex) {
+    ex.printStackTrace();
 }
+    JScrollPane scrollPane = new JScrollPane(photo);
+    root.add(scrollPane, BorderLayout.CENTER);  
+
+
+
+}
+
 private void setupStatusBar(){
   var statusPanel =  new JPanel();
   statusLabel = new JLabel("Status bar");
@@ -80,13 +89,13 @@ private void setupStatusBar(){
 
   statusPanel.add(statusLabel, BorderLayout.WEST);
    
-  add(statusPanel, BorderLayout.SOUTH);
+  root.add(statusPanel, BorderLayout.SOUTH);
 
 }
 private void setupToolbar(){
   var toolbarPanel = new JPanel();
 
-  add(toolbarPanel, BorderLayout.WEST);
+  root.add(toolbarPanel, BorderLayout.NORTH);
   var label = new JLabel("Categories");
   toolbarPanel.add(label);
   ActionListener categListener = e->printCategory(e);
