@@ -1,8 +1,13 @@
 // PhotoComponent.java
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseMotionAdapter;
+
 import java.awt.event.MouseEvent;
+
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -11,7 +16,8 @@ import java.io.IOException;
 public class PhotoComponent extends JComponent {
     private final PhotoModel model = new PhotoModel();
     private final PhotoView view = new PhotoView();
-
+    StrokePath currentStroke;
+    TextBlock currentText;
     public PhotoComponent() {
         setPreferredSize(new Dimension(800, 600));
 
@@ -19,17 +25,69 @@ public class PhotoComponent extends JComponent {
             @Override public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
                     model.flipped = !model.flipped;
+                   
                     repaint();
                 }
+                 if (model.flipped && e.getClickCount() == 1 &&e.getButton() == MouseEvent.BUTTON1){
+                    currentText = new TextBlock(e.getPoint());
+                    model.textList.add(currentText);
+                    requestFocusInWindow();  // so typing goes here
+                    setFocusable(true); //which one?
+                    repaint();
+                 }
+         
             }
+          
+              @Override public void mousePressed(MouseEvent e) {
+                if (model.flipped){
+                   currentStroke = new StrokePath();
+                    currentStroke.addPoint(e.getPoint());
+                    model.strokeList.add(currentStroke);
+                    
+                   
+                    // repaint();
+                    System.out.println("mouse pressed" + e.getPoint());
+                }
+         
+            }   
+       
+            @Override public void mouseReleased(MouseEvent e){
+                currentStroke=null;
+                System.out.println("mouse released" + e.getPoint());
+            }
+          
         });
+          addKeyListener(new KeyAdapter() {
+              @Override public void keyTyped(KeyEvent e){
+                 if (currentText != null && model.flipped) {
+
+                    currentText.text.append(e.getKeyChar());
+                    System.out.println( currentText.text);
+                    repaint();
+                 }
+           
+            }
+          });
+            addMouseMotionListener(new MouseMotionAdapter() {
+            @Override public void mouseDragged(MouseEvent e){
+                            if(model.flipped&&currentStroke!=null){
+                                currentStroke.addPoint(e.getPoint());
+                            System.out.println("mouse dragged" + e.getPoint());
+                                repaint();
+                            }
+
+                        }
+
+
+            });
+     
     }
 
     // Load an image file and show it
     public void loadPhoto(String path) throws IOException {
         BufferedImage img = ImageIO.read(new File(path));
         model.photo = img;
-        revalidate(); 
+        revalidate();
         repaint();
     }
 
