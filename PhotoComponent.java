@@ -32,7 +32,7 @@ public class PhotoComponent extends JComponent {
                     currentText = new TextBlock(e.getPoint());
                     model.textList.add(currentText);
                     requestFocusInWindow();  // so typing goes here
-                    setFocusable(true); //which one?
+                    setFocusable(true); 
                     repaint();
                  }
          
@@ -60,13 +60,29 @@ public class PhotoComponent extends JComponent {
           addKeyListener(new KeyAdapter() {
               @Override public void keyTyped(KeyEvent e){
                  if (currentText != null && model.flipped) {
-
-                    currentText.text.append(e.getKeyChar());
-                    System.out.println( currentText.text);
+                    
+                char c = e.getKeyChar();
+                if (!Character.isISOControl(c)) {   // skip backspace, enter, etc.
+                    currentText.text.append(c);
+                    System.out.println(currentText.text);
                     repaint();
-                 }
-           
+                        }
+                    }
+                }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (currentText != null && model.flipped) {
+                    if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                        StringBuilder text = currentText.text;
+                        if (text.length() > 0) {
+                            text.deleteCharAt(text.length() - 1);
+                            repaint();
+                        }
+                    }
+                }
             }
+
           });
             addMouseMotionListener(new MouseMotionAdapter() {
             @Override public void mouseDragged(MouseEvent e){
@@ -87,6 +103,15 @@ public class PhotoComponent extends JComponent {
     public void loadPhoto(String path) throws IOException {
         BufferedImage img = ImageIO.read(new File(path));
         model.photo = img;
+        revalidate();
+        repaint();
+    }
+    public void deletePhoto(){
+        model.photo = null;
+        model.flipped = false;
+        model.strokeList.clear();
+        model.textList.clear();
+        
         revalidate();
         repaint();
     }

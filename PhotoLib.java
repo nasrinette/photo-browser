@@ -8,8 +8,10 @@ import java.awt.event.ActionListener;
 public class PhotoLib extends JFrame {
     private JLabel statusLabel;
     private final JPanel root = new JPanel(new BorderLayout(10,10)); // ROOT
-
+    private PhotoComponent photo;
+    private JScrollPane scrollPane;
     public PhotoLib() {
+      
         super("Photo browser");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(root);                    
@@ -17,7 +19,7 @@ public class PhotoLib extends JFrame {
         // setMinimumSize(new Dimension(600, 300));
 
         setupMenuBar();
-        setupMainPanel();   // root.adds CENTER
+  
         setupToolbar();     // root.adds NORTH
         setupStatusBar();   // root.adds SOUTH
 
@@ -66,14 +68,14 @@ public class PhotoLib extends JFrame {
        setJMenuBar(menuBar);
     
 }
-private void setupMainPanel() {
-    PhotoComponent photo = new PhotoComponent();
+private void setupMainPanel(String photoPath) {
+    photo = new PhotoComponent();
     try {
-    photo.loadPhoto("me.jpg"); 
-} catch (Exception ex) {
-    ex.printStackTrace();
+        photo.loadPhoto(photoPath);
+    } catch (Exception ex) {
+        ex.printStackTrace();
 }
-    JScrollPane scrollPane = new JScrollPane(photo);
+    scrollPane = new JScrollPane(photo);
     root.add(scrollPane, BorderLayout.CENTER);  
 
 
@@ -127,6 +129,7 @@ private void importFile(){
     if(returnVal == JFileChooser.APPROVE_OPTION) {
       statusLabel.setText("You chose to open this file: " +
             chooser.getSelectedFile().getName());
+            setupMainPanel(chooser.getSelectedFile().getAbsolutePath());
     }
 }
 
@@ -134,7 +137,20 @@ private void quitApp(){
   System.exit(0);
 }
 private void deletePhoto(){
-  statusLabel.setText("Deleting a photo...");
+  if(scrollPane != null){  
+    statusLabel.setText("Deleting the photo...");
+    photo.deletePhoto();
+    root.remove(scrollPane);
+    photo = null;
+    scrollPane = null;  
+    root.revalidate();
+    root.repaint();
+
+  } else {
+    statusLabel.setText("No photo to delete");
+  }
+ 
+
 }
 private void photoViewer(){
   statusLabel.setText("Photo viewer: shows one photo at a time");
