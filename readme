@@ -1,3 +1,22 @@
-Run the following commands to execute the application
-- javac Main.java
-- java Main
+## Requirements
+
+* Java 8 or newer.
+* A reasonably sized image (for example ≤ 2048 × 1536) to avoid memory issues.
+
+## Build and Run
+
+From the project root, compile and launch:
+
+```bash
+javac Main.java
+java Main
+```
+
+The program starts with an empty window.
+Use **File → Import** to load a photo, then:
+
+* **Double-click** the photo to flip to the back side for annotation.
+* **Single-click** on the back to set a text insertion point and type.
+* **Drag with the mouse** on the back to draw strokes.
+* **File → Delete** removes the current photo and annotations.
+

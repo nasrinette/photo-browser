@@ -7,18 +7,18 @@ public final class PhotoView {
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, size.width, size.height);
 
-      
-  
-        if (!model.flipped && model.photo != null) {
+
+
+        if (!model.isFlipped() && model.getPhoto() != null) {
             //draw the photo
-            int dx = (size.width  - model.photo.getWidth())  / 2;
-            int dy = (size.height - model.photo.getHeight()) / 2; 
-            g2.drawImage(model.photo, dx, dy, null);
+            int dx = (size.width  - model.getPhoto().getWidth())  / 2;
+            int dy = (size.height - model.getPhoto().getHeight()) / 2; 
+            g2.drawImage(model.getPhoto(), dx, dy, null);
             return;
         }
         //  white card same size as photo (or component if no photo yet)
-            int w = (model.photo != null) ? model.photo.getWidth() : size.width;
-            int h = (model.photo != null) ? model.photo.getHeight() : size.height;
+            int w = (model.getPhoto() != null) ? model.getPhoto().getWidth() : size.width;
+            int h = (model.getPhoto() != null) ? model.getPhoto().getHeight() : size.height;
             int dx = (size.width - w) / 2;
             int dy = (size.height - h) / 2;
             Rectangle back = new Rectangle(dx, dy, w, h);
@@ -28,13 +28,13 @@ public final class PhotoView {
             g2.drawRect(back.x, back.y, back.width - 1, back.height - 1);
 
         // strokes
-        if (model.strokeList != null && !model.strokeList.isEmpty()) {
+        if (model.getStrokeList() != null && !model.getStrokeList().isEmpty()) {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             // clip so ink can't spill outside the back
             Shape oldClip = g2.getClip();
             g2.setClip(back);
             g2.setColor(Color.BLACK);
-            for (StrokePath s : model.strokeList) {
+            for (StrokePath s : model.getStrokeList()) {
                 if (s.points.size() < 2) continue;
                 g2.setStroke(new BasicStroke(s.width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 for (int i = 1; i < s.points.size(); i++) {
@@ -47,13 +47,13 @@ public final class PhotoView {
         }
 
         // text
-        if (model.textList != null && !model.textList.isEmpty()) {
+        if (model.getTextList() != null && !model.getTextList().isEmpty()) {
             // text rendering
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             g2.setColor(Color.BLACK); // text color 
             g2.setFont(new Font("SansSerif", Font.PLAIN, 26));
 
-            for (TextBlock tb : model.textList) {
+            for (TextBlock tb : model.getTextList()) {
                 drawWrappedTextInBack(g2, tb, back);
             }
         }

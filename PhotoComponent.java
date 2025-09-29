@@ -23,13 +23,13 @@ public class PhotoComponent extends JComponent {
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-                    model.flipped = !model.flipped;
+                    model.setFlipped(!model.isFlipped());
                    
                     repaint();
                 }
-                 if (model.flipped && e.getClickCount() == 1 &&e.getButton() == MouseEvent.BUTTON1){
+                if (model.isFlipped() && e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1) {
                     currentText = new TextBlock(e.getPoint());
-                    model.textList.add(currentText);
+                    model.getTextList().add(currentText);
                     requestFocusInWindow();  // so typing goes here
                     setFocusable(true); 
                     repaint();
@@ -38,10 +38,10 @@ public class PhotoComponent extends JComponent {
             }
           
               @Override public void mousePressed(MouseEvent e) {
-                if (model.flipped){
+                if (model.isFlipped()){
                    currentStroke = new StrokePath();
                     currentStroke.addPoint(e.getPoint());
-                    model.strokeList.add(currentStroke);
+                    model.getStrokeList().add(currentStroke);
                     
                    
                     // repaint();
@@ -58,7 +58,7 @@ public class PhotoComponent extends JComponent {
         });
           addKeyListener(new KeyAdapter() {
               @Override public void keyTyped(KeyEvent e){
-                 if (currentText != null && model.flipped) {
+                 if (currentText != null && model.isFlipped()) {
                     
                 char c = e.getKeyChar();
                 if (!Character.isISOControl(c)) {   // skip backspace, enter, etc.
@@ -71,7 +71,7 @@ public class PhotoComponent extends JComponent {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (currentText != null && model.flipped) {
+                if (currentText != null && model.isFlipped()) {
                     if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                         StringBuilder text = currentText.text;
                         if (text.length() > 0) {
@@ -85,7 +85,7 @@ public class PhotoComponent extends JComponent {
           });
             addMouseMotionListener(new MouseMotionAdapter() {
             @Override public void mouseDragged(MouseEvent e){
-                            if(model.flipped&&currentStroke!=null){
+                            if(model.isFlipped()&&currentStroke!=null){
                                 currentStroke.addPoint(e.getPoint());
                             System.out.println("mouse dragged" + e.getPoint());
                                 repaint();
@@ -101,16 +101,16 @@ public class PhotoComponent extends JComponent {
     // Load an image file and show it
     public void loadPhoto(String path) throws IOException {
         BufferedImage img = ImageIO.read(new File(path));
-        model.photo = img;
+        model.setPhoto(img);
         revalidate();
         repaint();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        if (model.photo != null) {
+        if (model.getPhoto() != null) {
             // Match the real image size when a photo is present
-            return new Dimension(model.photo.getWidth(), model.photo.getHeight());
+            return new Dimension(model.getPhoto().getWidth(), model.getPhoto().getHeight());
         }
         // Default size before any photo is loaded
         return new Dimension(800, 600);
