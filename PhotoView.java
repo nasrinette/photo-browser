@@ -4,24 +4,24 @@ import java.awt.*;
 public final class PhotoView {
 
     public void paint(Graphics2D g2, Dimension size, PhotoModel model) {
-      
-        int dx = (size.width  - model.photo.getWidth())  / 2;
-        int dy = (size.height - model.photo.getHeight()) / 2; 
-        // clear background
         g2.setColor(Color.WHITE);
-        g2.fillRect(dx, dy, size.width, size.height);
+        g2.fillRect(0, 0, size.width, size.height);
+
+      
+  
         if (!model.flipped && model.photo != null) {
             //draw the photo
-      
+            int dx = (size.width  - model.photo.getWidth())  / 2;
+            int dy = (size.height - model.photo.getHeight()) / 2; 
             g2.drawImage(model.photo, dx, dy, null);
             return;
         }
         //  white card same size as photo (or component if no photo yet)
             int w = (model.photo != null) ? model.photo.getWidth() : size.width;
             int h = (model.photo != null) ? model.photo.getHeight() : size.height;
+            int dx = (size.width - w) / 2;
+            int dy = (size.height - h) / 2;
             Rectangle back = new Rectangle(dx, dy, w, h);
-
-        // draw white back + thin border
             g2.setColor(Color.WHITE);
             g2.fillRect(back.x, back.y, back.width, back.height);
             g2.setColor(new Color(0,0,0,40));

@@ -73,14 +73,21 @@ public class PhotoLib extends JFrame {
     
 }
 private void setupMainPanel(String photoPath) {
-    photo = new PhotoComponent();
+if (scrollPane != null) {
+    root.remove(scrollPane);   // remove old before adding new
+}
+photo = new PhotoComponent();
+// photo.loadPhoto(photoPath);
     try {
         photo.loadPhoto(photoPath);
     } catch (Exception ex) {
         ex.printStackTrace();
 }
-    scrollPane = new JScrollPane(photo);
-    root.add(scrollPane, BorderLayout.CENTER);  
+scrollPane = new JScrollPane(photo);
+root.add(scrollPane, BorderLayout.CENTER);
+root.revalidate();
+root.repaint();
+    
 
 
 
@@ -143,12 +150,12 @@ private void quitApp(){
 private void deletePhoto(){
   if(scrollPane != null){  
     statusLabel.setText("Deleting the photo...");
-    photo.deletePhoto();
     root.remove(scrollPane);
-    photo = null;
-    scrollPane = null;  
     root.revalidate();
     root.repaint();
+    // photo.deletePhoto(); 
+    photo = null;
+    scrollPane = null;
 
   } else {
     statusLabel.setText("No photo to delete");

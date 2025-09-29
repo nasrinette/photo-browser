@@ -19,7 +19,6 @@ public class PhotoComponent extends JComponent {
     StrokePath currentStroke;
     TextBlock currentText;
     public PhotoComponent() {
-        setPreferredSize(new Dimension(800, 600));
 
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
@@ -106,21 +105,15 @@ public class PhotoComponent extends JComponent {
         revalidate();
         repaint();
     }
-    public void deletePhoto(){
-        model.photo = null;
-        model.flipped = false;
-        model.strokeList.clear();
-        model.textList.clear();
-        
-        revalidate();
-        repaint();
-    }
 
-    @Override public Dimension getPreferredSize() {
+    @Override
+    public Dimension getPreferredSize() {
         if (model.photo != null) {
+            // Match the real image size when a photo is present
             return new Dimension(model.photo.getWidth(), model.photo.getHeight());
         }
-        return super.getPreferredSize(); // fallback 800x600
+        // Default size before any photo is loaded
+        return new Dimension(800, 600);
     }
 
     @Override protected void paintComponent(Graphics g) {
