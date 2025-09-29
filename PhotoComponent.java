@@ -45,14 +45,14 @@ public class PhotoComponent extends JComponent {
                     
                    
                     // repaint();
-                    System.out.println("mouse pressed" + e.getPoint());
+                    // System.out.println("mouse pressed" + e.getPoint());
                 }
          
             }   
        
             @Override public void mouseReleased(MouseEvent e){
                 currentStroke=null;
-                System.out.println("mouse released" + e.getPoint());
+                // System.out.println("mouse released" + e.getPoint());
             }
           
         });
@@ -63,7 +63,7 @@ public class PhotoComponent extends JComponent {
                 char c = e.getKeyChar();
                 if (!Character.isISOControl(c)) {   // skip backspace, enter, etc.
                     currentText.text.append(c);
-                    System.out.println(currentText.text);
+                    // System.out.println(currentText.text);
                     repaint();
                         }
                     }
@@ -87,7 +87,7 @@ public class PhotoComponent extends JComponent {
             @Override public void mouseDragged(MouseEvent e){
                             if(model.isFlipped()&&currentStroke!=null){
                                 currentStroke.addPoint(e.getPoint());
-                            System.out.println("mouse dragged" + e.getPoint());
+                            // System.out.println("mouse dragged" + e.getPoint());
                                 repaint();
                             }
 
