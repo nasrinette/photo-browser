@@ -14,9 +14,13 @@ public class PhotoLib extends JFrame {
       
         super("Photo browser");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setContentPane(root);                    
-        setPreferredSize(new Dimension(1300, 900));
-        // setMinimumSize(new Dimension(600, 300));
+        setContentPane(root);               
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+
+        // make the component as wide as the screen, and some fraction of height:
+        setPreferredSize(new Dimension(screenWidth, screenHeight * 9 / 10));
 
         setupMenuBar();
   

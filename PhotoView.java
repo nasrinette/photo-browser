@@ -4,25 +4,28 @@ import java.awt.*;
 public final class PhotoView {
 
     public void paint(Graphics2D g2, Dimension size, PhotoModel model) {
-       // clear / background
-        // g2.setColor(new Color(245,245,245));
-        // g2.fillRect(0, 0, size.width, size.height);
-
+      
+        int dx = (size.width  - model.photo.getWidth())  / 2;
+        int dy = (size.height - model.photo.getHeight()) / 2; 
+        // clear background
+        g2.setColor(Color.WHITE);
+        g2.fillRect(dx, dy, size.width, size.height);
         if (!model.flipped && model.photo != null) {
-            //draw the photo full size
-            g2.drawImage(model.photo, 0, 0, null);
+            //draw the photo
+      
+            g2.drawImage(model.photo, dx, dy, null);
             return;
         }
         //  white card same size as photo (or component if no photo yet)
             int w = (model.photo != null) ? model.photo.getWidth() : size.width;
             int h = (model.photo != null) ? model.photo.getHeight() : size.height;
-            Rectangle back = new Rectangle(0, 0, w, h);
+            Rectangle back = new Rectangle(dx, dy, w, h);
 
         // draw white back + thin border
-        g2.setColor(Color.WHITE);
-        g2.fillRect(back.x, back.y, back.width, back.height);
-        g2.setColor(new Color(0,0,0,40));
-        g2.drawRect(back.x, back.y, back.width - 1, back.height - 1);
+            g2.setColor(Color.WHITE);
+            g2.fillRect(back.x, back.y, back.width, back.height);
+            g2.setColor(new Color(0,0,0,40));
+            g2.drawRect(back.x, back.y, back.width - 1, back.height - 1);
 
         // strokes
         if (model.strokeList != null && !model.strokeList.isEmpty()) {
@@ -48,6 +51,8 @@ public final class PhotoView {
             // text rendering
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             g2.setColor(Color.BLACK); // text color 
+            g2.setFont(new Font("SansSerif", Font.PLAIN, 26));
+
             for (TextBlock tb : model.textList) {
                 drawWrappedTextInBack(g2, tb, back);
             }
@@ -135,7 +140,7 @@ public final class PhotoView {
                 baselineY += lineHeight;
                 if (baselineY + descent > back.y + back.height) return;
             } 
-            
+
         }
     }
 }
