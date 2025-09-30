@@ -1,0 +1,39 @@
+WIMP Text Editor Visual Elements Positioning 
+Nasirova Nazrin, Bassal Dimah, Maris Clara
+Editor Context
+Our design focuses specifically on Google Docs and similar web based WIMP text editors (such as Microsoft Word, Notion). Google Docs serves as our primary reference point because it exemplifies the common frustrations users experience with image positioning. 
+The main issue being that visual elements unexpectedly jump to unwanted locations, the lack of freedom when positioning them, text wrapping behaves unpredictably and users lack clear visual feedback about placement rules. The editor operates within the familiar WIMP paradigm where users interact through browser windows, utilize toolbar icons for formatting commands, access functionality through dropdown menus, and manipulate content using mouse pointer interactions. We feel that this is not enough for a user to have a pleasant experience with positioning the whole range of visual elements within documents. 
+Object of Interest
+The primary object of interest in our design is embedded visual elements within text documents. These visual elements encompass a broad range of content that users insert into their documents, including images (photographs, illustrations, diagrams), tables, charts, text boxes, shapes, and any other graphical or structural elements that need to be positioned relative to text content.
+Operation
+The core operation we are addressing is visual element positioning and placement within the document. The operation included for doing this process:
+Initial placement: Dragging visual elements from external sources or internal galleries into the document
+Repositioning: Moving existing visual elements to new locations within the document
+Text integration: Controlling how visual elements interact with surrounding text through wrapping and flow behaviors that are available after the user clicks on the element
+Spatial relationship management: Defining and adjusting the relationship between visual elements and text elements
+This operation is fundamental to document creation but notoriously problematic in current text editors, where users often struggle with unpredictable visual element behavior, mysterious text wrapping rules, and lack of visual feedback about placement consequences.
+
+Original Interaction
+4.1 Explanation
+We propose a three zone visual feedback system that transforms the document interface when users begin adding or repositioning visual elements. When a user initiates the dragging process, the entire document page dynamically changes colors to provide clear, intuitive guidance:
+Red Zone (Margin Areas): These restricted areas represent the document margins where no visual elements can be placed. The red coloring provides immediate visual feedback that these zones are off-limits for content placement.
+Green Zone (Text-Free Areas): These unrestricted areas indicate sections of the document with no existing text content. Users can freely position visual elements anywhere within green zones without any constraints or layout disruptions, providing complete creative freedom.
+Yellow Zone (Text-Occupied Areas): These interactive areas represent sections containing text content. In yellow zones, users experience our innovative "Text Flow River" system represented by blue streams that visualize how text currently flows through the document. When users drag visual elements over these streams, the rivers bend and curve dynamically around the element, showing exactly how text will reposition. Users can grab and manipulate stream edges to manually adjust text boundaries, and the streams change width to indicate text density and spacing. 
+Just as a rock placed in a flowing river causes water to bend naturally around it, our Text Flow Rivers system works the same way  when users drag visual elements over the blue text streams, the text automatically curves around the element's shape. Wide elements create broader curves, narrow ones produce tighter bends. This natural metaphor makes text behavior intuitive and predictable.
+Throughout the entire dragging and positioning process, users receive continuous real-time visual updates, ensuring they always understand the consequences of their placement decisions before committing to any changes. This immediate feedback eliminates the guesswork and frustration associated with traditional text editor interfaces.
+
+4.2 Sketch
+
+Instrumental Interaction Application
+5.1 Reification
+Our system applies reification by making Google Docs hidden layout rules into visible, manipulable objects. Where users currently face invisible placement restrictions, unpredictable text wrapping, and unclear boundaries, our design transforms these abstract concepts into concrete visual elements: red zones show margin restrictions, green zones mark safe areas, yellow zones indicate text sections, and blue streams make text flow tangible. This converts invisible software rules into direct visual interactions, eliminating guesswork and enabling intuitive document layout control.
+
+5.2 Polymorphism
+The three zone system and Text Flow Rivers work identically across all visual element types: images, tables, charts, and text boxes all trigger the same colored feedback and stream bending behavior. Whether positioning a small photo or large table, users experience consistent interaction patterns with uniform visual responses, requiring only one learned behavior for all visual content types.
+
+5.3 Reuse
+Our system demonstrates reuse by employing the same visual elements for multiple functions rather than creating separate tools for each task. 
+The blue text streams serve multiple purposes: displaying current text flow, previewing wrapping behavior, enabling direct boundary manipulation, and facilitating custom layout creation. 
+Similarly, the colored zones guide initial placement, assist with repositioning, provide real time dragging feedback, and help users understand document structure. 
+By reusing these core visual elements (streams and zones) across all positioning tasks, users learn one consistent interaction pattern that applies universally throughout the document editing process, reducing cognitive load and creating interface efficiency.
+
